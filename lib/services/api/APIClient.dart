@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/endpoints.dart';
 
@@ -32,4 +33,7 @@ abstract class APIClient {
 
   @POST('/connect/token')
   Future<User> login(@Body() Map<String, String> body);
+
+  @GET('/api/Producto')
+  Future<List<Products>> getProducts();
 }

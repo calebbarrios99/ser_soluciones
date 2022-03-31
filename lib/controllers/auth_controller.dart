@@ -3,9 +3,16 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
+import 'package:ser_soluciones/utils/Alerts/error_dialog.dart';
 import 'package:ser_soluciones/utils/MyPreferences.dart';
 
 class AuthController extends GetxController {
+  final Rx<User> _userModel = User(accessToken: '').obs;
+
+  User get user => _userModel.value;
+
+  set user(User value) => _userModel.value = value;
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -13,14 +20,18 @@ class AuthController extends GetxController {
     APIClient apiClient;
     final dio = Dio();
 
-    apiClient = APIClient(dio);
+    try {
+      apiClient = APIClient(dio);
 
-    User response = await apiClient.login({
-      'client_id': 'any_client',
-      'client_secret': '554a979c-41f4-45da-899c-e209c673ab80',
-      'grant_type': 'client_credentials'
-    });
-    MyPreferences.saveAuth(response);
-    logger.d(response);
+      User response = await apiClient.login({
+        'client_id': 'any_client',
+        'client_secret': '554a979c-41f4-45da-899c-e209c673ab80',
+        'grant_type': 'client_credentials'
+      });
+      MyPreferences.saveAuth(response);
+      logger.d(response);
+    } on DioError catch (error) {
+      logger.d(error);
+    }
   }
 }
