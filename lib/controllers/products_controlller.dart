@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:ser_soluciones/controllers/auth_controller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
-import 'package:ser_soluciones/utils/MyPreferences.dart';
 import 'package:ser_soluciones/utils/hive/hive_data.dart';
 
 class ProductsController extends GetxController {
@@ -14,9 +12,8 @@ class ProductsController extends GetxController {
   set products(value) => _products = value;
   final looger = Logger();
   static const HiveData hiveData = HiveData();
-  //bool _loading = true;
-  //get loading => _loading;
-
+  bool _loading = true;
+  get loading => _loading;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -38,9 +35,8 @@ class ProductsController extends GetxController {
         }
       }
 
-      _products = productHive;
+      _products = await hiveData.products;
 
-      //  _loading = false;
       looger.d(_products);
     } on Exception catch (e) {
       _products = await hiveData.products;
@@ -48,10 +44,12 @@ class ProductsController extends GetxController {
       looger.d(e);
     }
     update(['products']);
+    _loading = false;
+
     // pr
   }
 
-  /* void setProductModel() async {
+  /*void setProductModel() async {
     final products = await hiveData.products;
     looger.d(products);
     setProductM(products);

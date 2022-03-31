@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:ser_soluciones/services/routes/app_pages.dart';
 import 'package:ser_soluciones/utils/constans.dart';
 
-class GlobalAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const GlobalAppBar({
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const MyAppBar({
     required this.titleText,
     required this.context,
     this.returningValue,
@@ -18,11 +20,11 @@ class GlobalAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.shopping_cart),
-          tooltip: 'Open shopping cart',
+          tooltip: 'Abrir carrito',
           onPressed: () {
-            // handle the press
+            Get.toNamed(Routes.CART);
           },
-        ),
+        )
       ],
       backgroundColor: kDarkBlueMainColor,
       title: Text(

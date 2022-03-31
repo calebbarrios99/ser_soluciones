@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
-import 'package:ser_soluciones/utils/Alerts/error_dialog.dart';
 import 'package:ser_soluciones/utils/MyPreferences.dart';
 
 class AuthController extends GetxController {

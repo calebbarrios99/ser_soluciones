@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ser_soluciones/views/cart_view.dart';
 import 'package:ser_soluciones/views/home_view.dart';
 part './app_routes.dart';
 
@@ -10,7 +11,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.CART,
-      page: () => const Homeview(),
+      page: () => const Card_view(),
     )
   ];
 }
