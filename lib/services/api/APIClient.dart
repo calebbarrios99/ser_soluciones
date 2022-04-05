@@ -11,7 +11,8 @@ part 'APIClient.g.dart';
 
 @RestApi(baseUrl: MAIN)
 abstract class APIClient {
-  factory APIClient(Dio dio, {String? baseUrl, String? token}) {
+  factory APIClient(Dio dio,
+      {String? baseUrl, String? token, required String contentType}) {
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
@@ -20,11 +21,12 @@ abstract class APIClient {
         error: true,
         compact: true,
         maxWidth: 200));
+
     dio.options = BaseOptions(
       receiveTimeout: 20000,
       connectTimeout: 20000,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": contentType,
         HttpHeaders.authorizationHeader: 'Bearer $token'
       },
     );
@@ -36,4 +38,13 @@ abstract class APIClient {
 
   @GET('/api/Producto')
   Future<List<Products>> getProducts();
+
+  @POST('/api/Producto')
+  Future<Products> createProducts(@Body() Map<String, dynamic> body);
+
+  @PUT('/api/Producto')
+  Future<String> editProducts();
+
+  @DELETE('/api/Producto/{id}')
+  Future<String> deleteProducts(@Path("id") int id);
 }

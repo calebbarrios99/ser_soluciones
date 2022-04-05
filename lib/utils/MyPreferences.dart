@@ -20,11 +20,11 @@ class MyPreferences {
     }
   }
 
-  static saveAuth(User user) async {
+  static saveAuth(String user) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(USER_INFORMATION, jsonEncode(user.toJson()));
+    prefs.setString(USER_INFORMATION, user);
 
-    Logger().d('saveAuth -> ${user.toJson()}');
+    Logger().d('saveAuth -> ${user.toString()}');
   }
 
   static Future<dynamic> getDynamic({required String key}) async {

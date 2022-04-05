@@ -7,30 +7,37 @@ part 'products.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Products extends HiveObject {
   Products(
-      {required this.name,
-      required this.heart,
+      {this.id,
+      required this.name,
+      required this.brand,
       required this.reference,
       required this.quantity,
-      required this.price});
-
+      required this.price,
+      required this.description});
   @HiveField(0)
-  String name;
+  int? id;
   @HiveField(1)
-  bool heart = false;
+  String name;
   @HiveField(2)
-  String reference;
+  String? brand;
   @HiveField(3)
-  int quantity;
+  String reference;
   @HiveField(4)
+  int quantity;
+  @HiveField(5)
   int price;
+  @HiveField(6)
+  String? description;
 
   factory Products.fromJson(final json) {
     return Products(
+        id: json['id'] ?? 1,
         name: json['name'],
-        heart: json['heart'] ?? false,
+        brand: json['brand'],
         reference: json['reference'],
         quantity: json['quantity'],
-        price: json['price']);
+        price: json['price'],
+        description: json['description']);
   }
 
   Map<String, dynamic> toJson() => _$ProductsToJson(this);

@@ -4,8 +4,8 @@ import 'package:ser_soluciones/controllers/products_controlller.dart';
 
 class GlobalBinding implements Bindings {
   @override
-  void dependencies() {
+  Future<void> dependencies() async {
     Get.put<AuthController>(AuthController(), permanent: true);
-    Get.put<ProductsController>(ProductsController(), permanent: true);
+    //Get.put<ProductsController>(ProductsController(), permanent: true);
   }
 }

@@ -11,7 +11,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.CART,
-      page: () => const Card_view(),
+      page: () => Cart_View(),
     )
   ];
 }

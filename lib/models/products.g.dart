@@ -17,28 +17,34 @@ class ProductsAdapter extends TypeAdapter<Products> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Products(
-      name: fields[0] as String,
-      heart: fields[1] as bool,
-      reference: fields[2] as String,
-      quantity: fields[3] as int,
-      price: fields[4] as int,
+      id: fields[0] as int?,
+      name: fields[1] as String,
+      brand: fields[2] as String?,
+      reference: fields[3] as String,
+      quantity: fields[4] as int,
+      price: fields[5] as int,
+      description: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Products obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.heart)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.reference)
+      ..write(obj.brand)
       ..writeByte(3)
-      ..write(obj.quantity)
+      ..write(obj.reference)
       ..writeByte(4)
-      ..write(obj.price);
+      ..write(obj.quantity)
+      ..writeByte(5)
+      ..write(obj.price)
+      ..writeByte(6)
+      ..write(obj.description);
   }
 
   @override
@@ -57,17 +63,21 @@ class ProductsAdapter extends TypeAdapter<Products> {
 // **************************************************************************
 
 Products _$ProductsFromJson(Map<String, dynamic> json) => Products(
+      id: json['id'] as int?,
       name: json['name'] as String,
-      heart: json['heart'] as bool,
+      brand: json['brand'] as String?,
       reference: json['reference'] as String,
       quantity: json['quantity'] as int,
       price: json['price'] as int,
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$ProductsToJson(Products instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
-      'heart': instance.heart,
+      'brand': instance.brand,
       'reference': instance.reference,
       'quantity': instance.quantity,
       'price': instance.price,
+      'description': instance.description,
     };

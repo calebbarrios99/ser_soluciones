@@ -7,56 +7,105 @@ import 'package:ser_soluciones/services/api/APIClient.dart';
 import 'package:ser_soluciones/utils/hive/hive_data.dart';
 
 class ProductsController extends GetxController {
+  /*  PRODUCTS  */
   List<Products> _products = <Products>[].obs;
-  List<Products> get products => _products;
+
+  List<Products> get products => _products.obs;
   set products(value) => _products = value;
-  final looger = Logger();
+
+  /* API*/
+  final auth = Get.find<AuthController>().user;
+  late Dio dio = Dio();
+  late APIClient apiClient;
+  final Logger logger = Logger();
+
+  ProductsController() {
+    dio = Dio();
+
+    // logger.d('esteeee', Get.find<AuthController>().user.toJson());
+
+    try {
+      apiClient = APIClient(dio,
+          contentType: 'application/json',
+          token: Get.find<AuthController>().user.accessToken.obs.toString());
+    } on DioError catch (error) {
+      //apiClient = APIClient(dio);
+      logger.d(error);
+    }
+  }
+
   static const HiveData hiveData = HiveData();
+
+  /* LOADING  */
   bool _loading = true;
   get loading => _loading;
+
   @override
   Future<void> onInit() async {
     super.onInit();
-    final instance = Get.find<AuthController>();
-    final dio = Dio();
 
+    loadProducts();
+  }
+
+  Future<void> loadProducts() async {
     try {
-      final apiClient = APIClient(dio, token: instance.user.accessToken);
-
       final response = await apiClient.getProducts();
-      //products = response;
 
       final productHive = await hiveData.products;
 
       if (productHive.isEmpty) {
         for (var i = 0; i < response.length; i++) {
           hiveData.saveProduct(response[i]);
-          looger.d(response[i]);
+          logger.d(response[i]);
         }
       }
 
-      _products = await hiveData.products;
-
-      looger.d(_products);
+      await updateProducts();
     } on Exception catch (e) {
-      _products = await hiveData.products;
+      products = await hiveData.products;
 
-      looger.d(e);
+      logger.d(e);
     }
-    update(['products']);
+
     _loading = false;
+    apiClient = APIClient(dio,
+        contentType: 'application/json',
+        token: Get.find<AuthController>().user.accessToken.obs.toString());
 
     // pr
   }
 
-  /*void setProductModel() async {
-    final products = await hiveData.products;
-    looger.d(products);
-    setProductM(products);
+  Future<void> updateProducts() async {
+    _products = await hiveData.products;
+
     update(['products']);
   }
 
-  void setProductM(value) {
-    _products = value;
-  }*/
+  Future<void> deleteProducts(int productId) async {
+    try {
+      await apiClient.deleteProducts(productId);
+    } on DioError catch (e) {
+      logger.d(e);
+    }
+  }
+
+  Future<void> createProducts(Products products) async {
+    final body = {
+      "id": 0,
+      "name": products.name,
+      "brand": products.brand,
+      "reference": products.reference,
+      "quantity": products.quantity,
+      "price": products.price,
+      "description": products.description
+    };
+
+    try {
+      final response = await apiClient.createProducts(body);
+      hiveData.saveProduct(response);
+    } on DioError catch (e) {
+      logger.d(e);
+    }
+    updateProducts();
+  }
 }

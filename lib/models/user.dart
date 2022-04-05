@@ -5,10 +5,10 @@ part 'user.g.dart';
 @JsonSerializable(explicitToJson: true)
 class User {
   User({
-    required this.accessToken,
+    this.accessToken,
   });
 
-  final String accessToken;
+  late String? accessToken;
 
   factory User.fromJson(final json) {
     return User(

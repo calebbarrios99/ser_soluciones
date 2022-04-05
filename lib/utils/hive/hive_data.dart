@@ -1,3 +1,4 @@
+import 'package:get/get_rx/get_rx.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:ser_soluciones/models/cart.dart';
 import 'package:ser_soluciones/models/products.dart';
@@ -26,7 +27,7 @@ class HiveData {
   deleteProduct(int index) async {
     final Box<Products> box =
         await Hive.openBox<Products>(PRODUCTS_INFORMATION);
-    return box.delete(index);
+    return box.deleteAt(index);
   }
 
   deleteCart(int index) async {
