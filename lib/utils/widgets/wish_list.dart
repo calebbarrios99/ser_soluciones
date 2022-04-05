@@ -39,7 +39,9 @@ class WishList extends StatelessWidget {
                     color: Colors.amber[200],
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold)),
-            onTap: () {},
+            onTap: () {
+              _instance.productDetail(products);
+            },
           ),
         );
       },

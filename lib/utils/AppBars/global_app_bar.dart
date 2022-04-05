@@ -7,24 +7,28 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
     required this.titleText,
     required this.context,
+    required this.icon,
     this.returningValue,
   });
 
   final String titleText;
   final dynamic returningValue;
   final BuildContext context;
+  final bool icon;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.shopping_cart),
-          tooltip: 'Abrir carrito',
-          onPressed: () {
-            Get.toNamed(Routes.CART);
-          },
-        )
+        icon
+            ? IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                tooltip: 'Abrir carrito',
+                onPressed: () {
+                  Get.toNamed(Routes.CART);
+                },
+              )
+            : Icon(null),
       ],
       backgroundColor: kDarkBlueMainColor,
       title: Text(

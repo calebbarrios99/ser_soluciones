@@ -24,7 +24,7 @@ class MyPreferences {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(USER_INFORMATION, user);
 
-    Logger().d('saveAuth -> ${user.toString()}');
+    // Logger().d('saveAuth -> ${user.toString()}');
   }
 
   static Future<dynamic> getDynamic({required String key}) async {

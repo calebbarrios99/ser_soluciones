@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:ser_soluciones/controllers/auth_controller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
+import 'package:ser_soluciones/services/routes/app_pages.dart';
 import 'package:ser_soluciones/utils/hive/hive_data.dart';
 
 class ProductsController extends GetxController {
@@ -107,5 +108,9 @@ class ProductsController extends GetxController {
       logger.d(e);
     }
     updateProducts();
+  }
+
+  productDetail(Products products) {
+    Get.toNamed(Routes.PRODUCT_DETAIL, arguments: products);
   }
 }

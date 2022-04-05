@@ -50,6 +50,6 @@ class AuthController extends GetxController {
   void setUser(value) {
     user.accessToken = value;
 
-    logger.d('prueba', user.accessToken);
+    // logger.d('prueba', user.accessToken);
   }
 }
