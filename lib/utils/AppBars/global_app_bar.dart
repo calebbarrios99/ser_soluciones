@@ -4,17 +4,18 @@ import 'package:ser_soluciones/services/routes/app_pages.dart';
 import 'package:ser_soluciones/utils/constans.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({
-    required this.titleText,
-    required this.context,
-    required this.icon,
-    this.returningValue,
-  });
+  MyAppBar(
+      {required this.titleText,
+      required this.context,
+      required this.icon,
+      this.returningValue,
+      this.onPress});
 
   final String titleText;
   final dynamic returningValue;
   final BuildContext context;
   final bool icon;
+  VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             ? IconButton(
                 icon: const Icon(Icons.shopping_cart),
                 tooltip: 'Abrir carrito',
-                onPressed: () {
-                  Get.toNamed(Routes.CART);
-                },
-              )
+                onPressed: onPress)
             : Icon(null),
       ],
       backgroundColor: kDarkBlueMainColor,

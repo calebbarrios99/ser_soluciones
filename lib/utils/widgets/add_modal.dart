@@ -4,7 +4,6 @@ import 'package:ser_soluciones/controllers/products_controlller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/utils/constans.dart';
 import 'package:ser_soluciones/utils/widgets/roundButton.dart';
-import 'package:ser_soluciones/utils/widgets/textFormField.dart';
 
 final _formKey = GlobalKey<FormState>();
 String name = '';
@@ -150,6 +149,7 @@ Future<dynamic> addDialog(
                   _formKey.currentState?.save();
 
                   productsController.createProducts(Products(
+                      select: 0,
                       name: name.toString(),
                       brand: brand.toString(),
                       reference: reference.toString(),

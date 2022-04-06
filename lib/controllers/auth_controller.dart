@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:ser_soluciones/controllers/products_controlller.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
 import 'package:ser_soluciones/utils/MyPreferences.dart';

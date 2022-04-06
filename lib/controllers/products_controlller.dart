@@ -18,26 +18,8 @@ class ProductsController extends GetxController {
   /* API*/
   final auth = Get.find<AuthController>().user;
   late Dio dio = Dio();
-  late APIClient apiClient;
+  late APIClient apiClient = ApiClient();
   final Logger logger = Logger();
-
-  ProductsController() {
-    dio = Dio();
-
-    try {
-      apiClient =
-          APIClient(dio, contentType: 'application/json', token: getToken());
-    } on DioError catch (error) {
-      //apiClient = APIClient(dio);
-      logger.d(error);
-    }
-  }
-
-  String? getToken() {
-    final user = Get.find<AuthController>().user;
-
-    return user.accessToken;
-  }
 
   static const HiveData hiveData = HiveData();
 
@@ -73,9 +55,6 @@ class ProductsController extends GetxController {
     }
 
     _loading = false;
-    apiClient = APIClient(dio,
-        contentType: 'application/json',
-        token: Get.find<AuthController>().user.accessToken.obs.toString());
 
     // pr
   }
@@ -87,6 +66,7 @@ class ProductsController extends GetxController {
   }
 
   Future<void> deleteProducts(int productId) async {
+    ApiClient();
     try {
       await apiClient.deleteProducts(productId);
     } on DioError catch (e) {
@@ -95,6 +75,8 @@ class ProductsController extends GetxController {
   }
 
   Future<void> createProducts(Products products) async {
+    ApiClient();
+
     final body = {
       "id": 0,
       "name": products.name,
@@ -115,6 +97,8 @@ class ProductsController extends GetxController {
   }
 
   Future<void> UpdateProducts(Products products, int index) async {
+    ApiClient();
+    logger.d(index);
     final body = {
       "id": 0,
       "name": products.name,
@@ -137,4 +121,17 @@ class ProductsController extends GetxController {
   productDetail(Products products, int index) {
     Get.to(ProductDetailView(index), arguments: products);
   }
+
+  goCart(List<Products> products) {
+    Get.toNamed(Routes.CART, arguments: products);
+  }
+
+  APIClient ApiClient() {
+    apiClient = APIClient(dio,
+        contentType: 'application/json',
+        token: Get.find<AuthController>().user.accessToken.toString());
+    return apiClient;
+  }
+
+  increment() {}
 }

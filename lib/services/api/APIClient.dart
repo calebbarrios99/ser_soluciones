@@ -1,14 +1,10 @@
 import 'dart:io';
-
-import 'package:get/get.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:ser_soluciones/controllers/auth_controller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/endpoints.dart';
-import 'package:ser_soluciones/utils/MyPreferences.dart';
 
 part 'APIClient.g.dart';
 

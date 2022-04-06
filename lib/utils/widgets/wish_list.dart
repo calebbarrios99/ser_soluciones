@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ser_soluciones/controllers/products_controlller.dart';
-import 'package:ser_soluciones/models/cart.dart';
 import 'package:ser_soluciones/models/products.dart';
-import 'package:ser_soluciones/utils/hive/hive_data.dart';
+import 'package:ser_soluciones/utils/constans.dart';
 import 'package:logger/logger.dart';
 import 'package:ser_soluciones/utils/widgets/slide_to_act_dialog.dart';
 
 class WishList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const HiveData hiveData = HiveData();
     final logger = Logger();
     final _instance = Get.find<ProductsController>();
 
@@ -24,24 +22,86 @@ class WishList extends StatelessWidget {
             createSlideDialog(
                 context: context, productId: products.id!, index: index);
           },
-          child: ListTile(
-            leading: const Icon(
-              Icons.shopping_bag_outlined,
-              color: Colors.amber,
+          onTap: () {
+            _instance.productDetail(products, index);
+          },
+          child: Container(
+            margin: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: <Widget>[
+                      Text(products.name),
+                      Text('\$${products.price}')
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Visibility(
+                        visible: products.quantity > 0,
+                        child: ClipOval(
+                          child: Material(
+                            color: kYellowMainColor,
+                            child: InkWell(
+                              splashColor: Colors.red,
+                              child: const SizedBox(
+                                width: 35.0,
+                                height: 35.0,
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                if (products.select > 0) {
+                                  products.select--;
+                                  _instance.update(['products']);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Obx(() => Text(products.quantity > 0
+                          ? products.select.obs.toString()
+                          : 'Agotado')),
+                      Visibility(
+                        visible: products.quantity > 0,
+                        child: ClipOval(
+                          child: Material(
+                            color: kYellowMainColor,
+                            child: InkWell(
+                              splashColor: Colors.green,
+                              child: const SizedBox(
+                                width: 35.0,
+                                height: 35.0,
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                if (products.select + 1 <= products.quantity) {
+                                  products.select++;
+                                  _instance.update(['products']);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            title: Text(' ${products.name}',
-                style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold)),
-            subtitle: Text('Precio: ${products.price} ',
-                style: TextStyle(
-                    color: Colors.amber[200],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold)),
-            onTap: () {
-              _instance.productDetail(products, index);
-            },
           ),
         );
       },

@@ -6,6 +6,6 @@ class GlobalBinding implements Bindings {
   @override
   Future<void> dependencies() async {
     Get.put<AuthController>(AuthController(), permanent: true);
-    //Get.put<ProductsController>(ProductsController(), permanent: true);
+    Get.put<ProductsController>(ProductsController(), permanent: true);
   }
 }

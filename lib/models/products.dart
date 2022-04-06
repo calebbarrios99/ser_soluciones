@@ -12,6 +12,7 @@ class Products extends HiveObject {
       required this.brand,
       required this.reference,
       required this.quantity,
+      required this.select,
       required this.price,
       required this.description});
   @HiveField(0)
@@ -28,12 +29,15 @@ class Products extends HiveObject {
   int price;
   @HiveField(6)
   String? description;
+  @HiveField(7)
+  int select = 0;
 
   factory Products.fromJson(final json) {
     return Products(
         id: json['id'] ?? 1,
         name: json['name'],
         brand: json['brand'],
+        select: json['select'] ?? 0,
         reference: json['reference'],
         quantity: json['quantity'],
         price: json['price'],

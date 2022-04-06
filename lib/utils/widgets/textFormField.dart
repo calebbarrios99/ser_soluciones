@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyTextFormField extends StatelessWidget {
-  MyTextFormField(this.value, this.hintText, this.formKey);
+  MyTextFormField(this.value, this.hintText, this.formKey, {Key? key})
+      : super(key: key);
 
   String value;
   String hintText;
