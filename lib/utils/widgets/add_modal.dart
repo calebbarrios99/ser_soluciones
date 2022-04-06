@@ -3,6 +3,7 @@ import 'package:get/route_manager.dart';
 import 'package:ser_soluciones/controllers/products_controlller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/utils/constans.dart';
+import 'package:ser_soluciones/utils/widgets/roundButton.dart';
 import 'package:ser_soluciones/utils/widgets/textFormField.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -142,16 +143,9 @@ Future<dynamic> addDialog(
         SizedBox(
             width: 20,
             height: 40,
-            child: TextButton.icon(
-              icon: const Icon(Icons.save),
-              label: const Text("Guardar"),
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: kYellowMainColor,
-                side: const BorderSide(color: Colors.deepOrange, width: 0.1),
-                elevation: 20,
-              ),
-              onPressed: () {
+            child: RoundButton(
+              text: 'Guardar',
+              onPress: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState?.save();
 

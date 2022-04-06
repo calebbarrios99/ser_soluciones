@@ -40,7 +40,7 @@ class WishList extends StatelessWidget {
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold)),
             onTap: () {
-              _instance.productDetail(products);
+              _instance.productDetail(products, index);
             },
           ),
         );

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ser_soluciones/controllers/product_detail.dart';
+import 'package:ser_soluciones/controllers/products_controlller.dart';
 import 'package:ser_soluciones/utils/AppBars/global_app_bar.dart';
+import 'package:ser_soluciones/utils/widgets/roundButton.dart';
 
 class ProductDetailView extends StatefulWidget {
-  const ProductDetailView({Key? key}) : super(key: key);
+  ProductDetailView(this.index);
+  int index;
 
   @override
   State<ProductDetailView> createState() => _ProductDetailViewState();
@@ -31,6 +34,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       TextFormField(
                         initialValue: _.productsDetail.name,
                         validator: (value) =>
@@ -151,6 +157,17 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           border: OutlineInputBorder(),
                         ),
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RoundButton(
+                          onPress: () {
+                            _formKey.currentState?.save();
+                            Get.find<ProductsController>()
+                                .UpdateProducts(_.productsDetail, widget.index);
+                            print(_.productsDetail.id);
+                          },
+                          text: 'Actualizar')
                     ],
                   ),
                 ),

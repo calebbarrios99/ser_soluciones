@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:get/get.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:ser_soluciones/controllers/auth_controller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/endpoints.dart';
+import 'package:ser_soluciones/utils/MyPreferences.dart';
 
 part 'APIClient.g.dart';
 
@@ -42,8 +45,9 @@ abstract class APIClient {
   @POST('/api/Producto')
   Future<Products> createProducts(@Body() Map<String, dynamic> body);
 
-  @PUT('/api/Producto')
-  Future<String> editProducts();
+  @PUT('/api/Producto/{id}')
+  Future<String> editProducts(
+      @Body() Map<String, dynamic> body, @Path('id') String id);
 
   @DELETE('/api/Producto/{id}')
   Future<String> deleteProducts(@Path("id") int id);

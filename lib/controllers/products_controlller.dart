@@ -6,6 +6,7 @@ import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
 import 'package:ser_soluciones/services/routes/app_pages.dart';
 import 'package:ser_soluciones/utils/hive/hive_data.dart';
+import 'package:ser_soluciones/views/product_detail.dart';
 
 class ProductsController extends GetxController {
   /*  PRODUCTS  */
@@ -23,16 +24,19 @@ class ProductsController extends GetxController {
   ProductsController() {
     dio = Dio();
 
-    // logger.d('esteeee', Get.find<AuthController>().user.toJson());
-
     try {
-      apiClient = APIClient(dio,
-          contentType: 'application/json',
-          token: Get.find<AuthController>().user.accessToken.obs.toString());
+      apiClient =
+          APIClient(dio, contentType: 'application/json', token: getToken());
     } on DioError catch (error) {
       //apiClient = APIClient(dio);
       logger.d(error);
     }
+  }
+
+  String? getToken() {
+    final user = Get.find<AuthController>().user;
+
+    return user.accessToken;
   }
 
   static const HiveData hiveData = HiveData();
@@ -61,7 +65,7 @@ class ProductsController extends GetxController {
         }
       }
 
-      await updateProducts();
+      await updateProductsModel();
     } on Exception catch (e) {
       products = await hiveData.products;
 
@@ -76,7 +80,7 @@ class ProductsController extends GetxController {
     // pr
   }
 
-  Future<void> updateProducts() async {
+  Future<void> updateProductsModel() async {
     _products = await hiveData.products;
 
     update(['products']);
@@ -107,10 +111,30 @@ class ProductsController extends GetxController {
     } on DioError catch (e) {
       logger.d(e);
     }
-    updateProducts();
+    updateProductsModel();
   }
 
-  productDetail(Products products) {
-    Get.toNamed(Routes.PRODUCT_DETAIL, arguments: products);
+  Future<void> UpdateProducts(Products products, int index) async {
+    final body = {
+      "id": 0,
+      "name": products.name,
+      "brand": products.brand,
+      "reference": products.reference,
+      "quantity": products.quantity,
+      "price": products.price,
+      "description": products.description
+    };
+
+    try {
+      await apiClient.editProducts(body, products.id.toString());
+      hiveData.updateProduct(index, products);
+    } on DioError catch (e) {
+      logger.d(e);
+    }
+    updateProductsModel();
+  }
+
+  productDetail(Products products, int index) {
+    Get.to(ProductDetailView(index), arguments: products);
   }
 }

@@ -69,14 +69,15 @@ class _APIClient implements APIClient {
   }
 
   @override
-  Future<String> editProducts() async {
+  Future<String> editProducts(body, id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _result = await _dio.fetch<String>(_setStreamType<String>(
         Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/Producto',
+            .compose(_dio.options, '/api/Producto/${id}',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data!;

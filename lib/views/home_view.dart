@@ -1,12 +1,8 @@
 // ignore_for_file: unnecessary_const
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ser_soluciones/controllers/products_controlller.dart';
-import 'package:ser_soluciones/models/cart.dart';
-import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/utils/AppBars/global_app_bar.dart';
 import 'package:ser_soluciones/utils/constans.dart';
 import 'package:ser_soluciones/utils/hive/hive_data.dart';

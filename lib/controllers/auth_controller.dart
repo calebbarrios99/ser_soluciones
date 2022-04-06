@@ -44,12 +44,11 @@ class AuthController extends GetxController {
     final token = await MyPreferences.getDynamic(key: USER_INFORMATION);
 
     setUser(token);
-    update();
   }
 
   void setUser(value) {
     user.accessToken = value;
 
-    // logger.d('prueba', user.accessToken);
+    logger.d('prueba', user.accessToken);
   }
 }
