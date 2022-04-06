@@ -7,7 +7,7 @@ class Utils {
   static String getCartTotal(List<Products> products) {
     double total = 0;
     for (var product in products) {
-      total += product.price * product.quantity;
+      total += product.price * product.select;
     }
     return Utils.getCurrency(total.toInt().toString());
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ser_soluciones/controllers/products_controlller.dart';
 import 'package:ser_soluciones/models/products.dart';
+import 'package:ser_soluciones/utils/Utils.dart';
 import 'package:ser_soluciones/utils/constans.dart';
 import 'package:logger/logger.dart';
 import 'package:ser_soluciones/utils/widgets/slide_to_act_dialog.dart';
@@ -35,7 +36,7 @@ class WishList extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Text(products.name),
-                      Text('\$${products.price}')
+                      Text('\$${Utils.getCurrency(products.price.toString())}')
                     ],
                   ),
                 ),

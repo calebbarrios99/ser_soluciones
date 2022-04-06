@@ -45,7 +45,8 @@ class Cart_View extends StatelessWidget {
                                   child: Column(
                                     children: <Widget>[
                                       Text(pro[index].name),
-                                      Text('\$${pro[index].price}')
+                                      Text(
+                                          '\$${Utils.getCurrency(pro[index].price.toString())}')
                                     ],
                                   ),
                                 ),
@@ -61,23 +62,23 @@ class Cart_View extends StatelessWidget {
                                           child: Material(
                                             color: kYellowMainColor,
                                             child: InkWell(
-                                              splashColor: Colors.red,
-                                              child: const SizedBox(
-                                                width: 35.0,
-                                                height: 35.0,
-                                                child: Icon(
-                                                  Icons.remove,
-                                                  color: Colors.black,
+                                                splashColor: Colors.red,
+                                                child: const SizedBox(
+                                                  width: 35.0,
+                                                  height: 35.0,
+                                                  child: Icon(
+                                                    Icons.remove,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              onTap: () {
-                                                if (pro[index].select > 0) {
-                                                  pro[index].select--;
-                                                  _instance
-                                                      .update(['products']);
-                                                }
-                                              },
-                                            ),
+                                                onTap: () {
+                                                  if (pro[index].select + 1 <=
+                                                      pro[index].quantity) {
+                                                    pro[index].select--;
+                                                    _instance
+                                                        .update(['products']);
+                                                  }
+                                                }),
                                           ),
                                         ),
                                       ),
@@ -90,24 +91,23 @@ class Cart_View extends StatelessWidget {
                                           child: Material(
                                             color: kYellowMainColor,
                                             child: InkWell(
-                                              splashColor: Colors.green,
-                                              child: const SizedBox(
-                                                width: 35.0,
-                                                height: 35.0,
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.black,
+                                                splashColor: Colors.green,
+                                                child: const SizedBox(
+                                                  width: 35.0,
+                                                  height: 35.0,
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              onTap: () {
-                                                if (pro[index].select + 1 <=
-                                                    pro[index].quantity) {
-                                                  pro[index].select++;
-                                                  _instance
-                                                      .update(['products']);
-                                                }
-                                              },
-                                            ),
+                                                onTap: () {
+                                                  if (pro[index].select + 1 <=
+                                                      pro[index].quantity) {
+                                                    pro[index].select++;
+                                                    _instance
+                                                        .update(['products']);
+                                                  }
+                                                }),
                                           ),
                                         ),
                                       ),
@@ -119,13 +119,13 @@ class Cart_View extends StatelessWidget {
                           );
                         },
                       ),
-                      Visibility(
-                        visible: pro.isNotEmpty,
-                        child: Text(
-                          'Total \$${Utils.getCartTotal(pro)}',
-                          style: const TextStyle(fontSize: 24),
-                        ),
-                      ),
+                      Obx(() => Visibility(
+                            visible: pro.isNotEmpty,
+                            child: Text(
+                              'Total \$${Utils.getCartTotal(pro)}',
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                          )),
                     ],
                   );
                 }),
