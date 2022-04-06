@@ -72,8 +72,7 @@ class Cart_View extends StatelessWidget {
                                                   ),
                                                 ),
                                                 onTap: () {
-                                                  if (pro[index].select + 1 <=
-                                                      pro[index].quantity) {
+                                                  if (pro[index].select > 0) {
                                                     pro[index].select--;
                                                     _instance
                                                         .update(['products']);
