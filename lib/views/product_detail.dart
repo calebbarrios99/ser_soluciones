@@ -165,9 +165,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                             _formKey.currentState?.save();
                             Get.find<ProductsController>()
                                 .UpdateProducts(_.productsDetail, widget.index);
+                            Get.back();
                             print(_.productsDetail.id);
                           },
-                          text: 'Actualizar')
+                          text: 'Actualizar ')
                     ],
                   ),
                 ),

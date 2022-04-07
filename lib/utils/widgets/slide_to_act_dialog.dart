@@ -34,7 +34,7 @@ void createSlideDialog(
                       index,
                     );
 
-                    _instance.onInit();
+                    _instance.updateProductsModel();
                   });
                 },
                 child: const Text(

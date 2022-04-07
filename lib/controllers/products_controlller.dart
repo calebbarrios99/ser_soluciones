@@ -18,7 +18,9 @@ class ProductsController extends GetxController {
   /* API*/
   final auth = Get.find<AuthController>().user;
   late Dio dio = Dio();
-  late APIClient apiClient = ApiClient();
+  late APIClient apiClient = APIClient(dio,
+      contentType: 'application/json', token: auth.accessToken.toString());
+
   final Logger logger = Logger();
 
   static const HiveData hiveData = HiveData();
@@ -26,12 +28,21 @@ class ProductsController extends GetxController {
   /* LOADING  */
   bool _loading = true;
   get loading => _loading;
+  set loading(value) => value;
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    Future.delayed(const Duration(seconds: 3), () {
+      loadProducts();
+    });
+  }
 
-    loadProducts();
+  String getToken() {
+    final user = Get.find<AuthController>().user;
+    print(user.accessToken);
+
+    return user.accessToken.toString();
   }
 
   Future<void> loadProducts() async {
@@ -49,7 +60,9 @@ class ProductsController extends GetxController {
 
       await updateProductsModel();
     } on Exception catch (e) {
-      products = await hiveData.products;
+      Get.find<ProductsController>().loading = false;
+
+      updateProductsModel();
 
       logger.d(e);
     }
@@ -66,7 +79,6 @@ class ProductsController extends GetxController {
   }
 
   Future<void> deleteProducts(int productId) async {
-    ApiClient();
     try {
       await apiClient.deleteProducts(productId);
     } on DioError catch (e) {
@@ -75,8 +87,6 @@ class ProductsController extends GetxController {
   }
 
   Future<void> createProducts(Products products) async {
-    ApiClient();
-
     final body = {
       "id": 0,
       "name": products.name,
@@ -97,7 +107,6 @@ class ProductsController extends GetxController {
   }
 
   Future<void> UpdateProducts(Products products, int index) async {
-    ApiClient();
     logger.d(index);
     final body = {
       "id": 0,
@@ -112,8 +121,11 @@ class ProductsController extends GetxController {
     try {
       await apiClient.editProducts(body, products.id.toString());
       hiveData.updateProduct(index, products);
+
+      Get.snackbar('Proceso exitoso', 'Actualizado correctamente');
     } on DioError catch (e) {
       logger.d(e);
+      Get.snackbar('${e.type}', e.message);
     }
     updateProductsModel();
   }
@@ -126,12 +138,9 @@ class ProductsController extends GetxController {
     Get.toNamed(Routes.CART, arguments: products);
   }
 
-  APIClient ApiClient() {
-    apiClient = APIClient(dio,
-        contentType: 'application/json',
-        token: Get.find<AuthController>().user.accessToken.toString());
-    return apiClient;
-  }
-
-  increment() {}
+  /*APIClient ApiClient() {
+      apiClient = APIClient(dio,
+          contentType: 'application/json',
+          token: Get.find<AuthController>().user.accessToken.toString());
+      return apiClient;*/
 }

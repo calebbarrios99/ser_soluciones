@@ -23,33 +23,43 @@ class _HomepageState extends State<Homeview> {
   HiveData hiveData = const HiveData();
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => onWillPop(context),
-      child: GetBuilder<ProductsController>(
-        init: ProductsController(),
-        id: 'products',
-        builder: (_) {
-          return Scaffold(
-            appBar: MyAppBar(
-              titleText: "Ser Soluciones",
-              context: context,
-              icon: true,
-              onPress: () {
-                final List<Products> pro = _.products;
-                pro.removeWhere((product) => product.select == 0);
-                _.goCart(pro);
-              },
-            ),
-            body: WishList(),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                await addDialog(context, _);
-              },
-              backgroundColor: kYellowMainColor,
-              child: const Icon(Icons.add),
-            ),
-          );
-        },
+    return Scaffold(
+      body: WillPopScope(
+        onWillPop: () => onWillPop(context),
+        child: GetBuilder<ProductsController>(
+          init: ProductsController(),
+          id: 'products',
+          builder: (_) {
+            if (_.loading) {
+              return const Center(
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: kYellowMainColor,
+                )),
+              );
+            }
+            return Scaffold(
+              appBar: MyAppBar(
+                titleText: "Ser Soluciones",
+                context: context,
+                icon: true,
+                onPress: () {
+                  final List<Products> pro = _.products;
+                  pro.removeWhere((product) => product.select == 0);
+                  _.goCart(pro);
+                },
+              ),
+              body: WishList(),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () async {
+                  await addDialog(context, _);
+                },
+                backgroundColor: kYellowMainColor,
+                child: const Icon(Icons.add),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

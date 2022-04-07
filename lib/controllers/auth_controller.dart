@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:ser_soluciones/controllers/products_controlller.dart';
 import 'package:ser_soluciones/models/user.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
 import 'package:ser_soluciones/utils/MyPreferences.dart';
@@ -25,16 +26,19 @@ class AuthController extends GetxController {
     APIClient apiClient;
     final dio = Dio();
 
-    apiClient =
-        APIClient(dio, contentType: 'application/x-www-form-urlencoded');
+    try {
+      apiClient =
+          APIClient(dio, contentType: 'application/x-www-form-urlencoded');
 
-    final response = await apiClient.login({
-      'client_id': 'any_client',
-      'client_secret': '554a979c-41f4-45da-899c-e209c673ab80',
-      'grant_type': 'client_credentials'
-    });
-    logger.d(response);
-    MyPreferences.saveAuth(response.accessToken.toString());
+      final response = await apiClient.login({
+        'client_id': 'any_client',
+        'client_secret': '554a979c-41f4-45da-899c-e209c673ab80',
+        'grant_type': 'client_credentials'
+      });
+      MyPreferences.saveAuth(response.accessToken.toString());
+    } on DioError catch (e) {
+      retrieveUser();
+    }
   }
 
   void retrieveUser() async {
@@ -46,6 +50,6 @@ class AuthController extends GetxController {
   void setUser(value) {
     user.accessToken = value;
 
-    logger.d('prueba', user.accessToken);
+    //logger.d('prueba', user.accessToken);
   }
 }

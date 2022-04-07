@@ -11,7 +11,7 @@ part 'APIClient.g.dart';
 @RestApi(baseUrl: MAIN)
 abstract class APIClient {
   factory APIClient(Dio dio,
-      {String? baseUrl, String? token, required String contentType}) {
+      {String? baseUrl, String? token, String? contentType}) {
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
