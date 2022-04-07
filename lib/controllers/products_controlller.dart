@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:ser_soluciones/controllers/auth_controller.dart';
 import 'package:ser_soluciones/models/products.dart';
 import 'package:ser_soluciones/services/api/APIClient.dart';
 import 'package:ser_soluciones/services/routes/app_pages.dart';
+import 'package:ser_soluciones/utils/MyPreferences.dart';
 import 'package:ser_soluciones/utils/hive/hive_data.dart';
 import 'package:ser_soluciones/views/product_detail.dart';
 
@@ -16,10 +18,10 @@ class ProductsController extends GetxController {
   set products(value) => _products = value;
 
   /* API*/
-  final auth = Get.find<AuthController>().user;
+  final auth = Get.find<AuthController>();
   late Dio dio = Dio();
   late APIClient apiClient = APIClient(dio,
-      contentType: 'application/json', token: auth.accessToken.toString());
+      contentType: 'application/json', token: auth.user.accessToken.toString());
 
   final Logger logger = Logger();
 
@@ -33,25 +35,17 @@ class ProductsController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    Future.delayed(const Duration(seconds: 3), () {
-      loadProducts();
-    });
-  }
-
-  String getToken() {
-    final user = Get.find<AuthController>().user;
-    print(user.accessToken);
-
-    return user.accessToken.toString();
+    //final token = await MyPreferences.getDynamic(key: USER_INFORMATION);
+    await auth.getToken().then((value) => {loadProducts()});
   }
 
   Future<void> loadProducts() async {
     try {
-      final response = await apiClient.getProducts();
-
       final productHive = await hiveData.products;
 
       if (productHive.isEmpty) {
+        final response = await apiClient.getProducts();
+
         for (var i = 0; i < response.length; i++) {
           hiveData.saveProduct(response[i]);
           logger.d(response[i]);
@@ -60,7 +54,7 @@ class ProductsController extends GetxController {
 
       await updateProductsModel();
     } on Exception catch (e) {
-      Get.find<ProductsController>().loading = false;
+      _loading = false;
 
       updateProductsModel();
 
@@ -82,7 +76,7 @@ class ProductsController extends GetxController {
     try {
       await apiClient.deleteProducts(productId);
     } on DioError catch (e) {
-      logger.d(e);
+      Get.snackbar('${e.type}', e.message);
     }
   }
 
@@ -101,12 +95,13 @@ class ProductsController extends GetxController {
       final response = await apiClient.createProducts(body);
       hiveData.saveProduct(response);
     } on DioError catch (e) {
-      logger.d(e);
+      Get.snackbar('${e.type}', e.message);
     }
     updateProductsModel();
   }
 
-  Future<void> UpdateProducts(Products products, int index) async {
+  Future<void> UpdateProducts(
+      BuildContext context, Products products, int index) async {
     logger.d(index);
     final body = {
       "id": 0,

@@ -29,10 +29,10 @@ void createSlideDialog(
                 alignment: Alignment.center,
                 onSubmit: () {
                   Future.delayed(const Duration(microseconds: 1), () async {
-                    await _instance.deleteProducts(productId);
                     hiveData.deleteProduct(
                       index,
                     );
+                    await _instance.deleteProducts(productId);
 
                     _instance.updateProductsModel();
                   });

@@ -17,9 +17,7 @@ class AuthController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-
-    await getToken();
-    retrieveUser();
+    //  getToken();
   }
 
   Future<void> getToken() async {
@@ -35,19 +33,24 @@ class AuthController extends GetxController {
         'client_secret': '554a979c-41f4-45da-899c-e209c673ab80',
         'grant_type': 'client_credentials'
       });
-      MyPreferences.saveAuth(response.accessToken.toString());
+      if (response.accessToken != null) {
+        await MyPreferences.saveAuth(response.accessToken.toString());
+      }
+
+      await retrieveUser();
     } on DioError catch (e) {
-      retrieveUser();
+      await retrieveUser();
     }
   }
 
-  void retrieveUser() async {
+  Future<void> retrieveUser() async {
     final token = await MyPreferences.getDynamic(key: USER_INFORMATION);
-
-    setUser(token);
+    logger.d('este', token);
+    await setUser(token);
+    return setUser(token);
   }
 
-  void setUser(value) {
+  Future<void> setUser(value) async {
     user.accessToken = value;
 
     //logger.d('prueba', user.accessToken);

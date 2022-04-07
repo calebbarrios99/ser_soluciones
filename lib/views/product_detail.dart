@@ -163,8 +163,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       RoundButton(
                           onPress: () {
                             _formKey.currentState?.save();
-                            Get.find<ProductsController>()
-                                .UpdateProducts(_.productsDetail, widget.index);
+                            Get.find<ProductsController>().UpdateProducts(
+                                context, _.productsDetail, widget.index);
                             Get.back();
                             print(_.productsDetail.id);
                           },
